@@ -92,7 +92,7 @@ spring-ssm-maven/
 - JDK 11+
 - MySQL 9.0+
 - Maven 3.6+
-- Tomcat 9
+- Tomcat 9.0
 
 ### 2. 数据库配置
 
