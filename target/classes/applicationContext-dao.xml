@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+<!--    这里是有关Dao操作 对象配置-->
+<!--    读取部文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+<!--    数据源-->
+    <bean class="org.apache.commons.dbcp2.BasicDataSource" id="dataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+<!--    sqlSessionFactory-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+<!--        配置数据源-->
+        <property name="dataSource" ref="dataSource"/>
+<!--        批量起别名-->
+        <property name="typeAliasesPackage" value="com.sxd.pojo"/>
+<!--        读取 sqlMapConfig.xml-->
+        <property name="configLocation" value="classpath:SqlMapConfig.xml"/>
+    </bean>
+
+<!--    有关mapper接口动态代理对象 配置mapper的扫描器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+<!--        属性 扫描的包是哪里-->
+        <property name="basePackage" value="com.sxd.mapper"/>
+<!--        指定一下 产生代理对象的那个工厂 sqlSession工厂-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+</beans>

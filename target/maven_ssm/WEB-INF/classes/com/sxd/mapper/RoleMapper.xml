@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxd.mapper.RoleMapper">
+    <!-- 根据ID查询角色 -->
+    <select id="queryRoleById" parameterType="int" resultType="com.sxd.pojo.Role">
+        SELECT id, name, description, status, created_at AS createdAt, updated_at AS updatedAt
+        FROM role
+        WHERE id = #{id}
+    </select>
+    
+    <!-- 查询所有角色 -->
+    <select id="queryAllRoles" resultType="com.sxd.pojo.Role">
+        SELECT id, name, description, status, created_at AS createdAt, updated_at AS updatedAt
+        FROM role
+        WHERE status = 1
+        ORDER BY id
+    </select>
+    
+    <!-- 添加角色 -->
+    <insert id="insertRole" parameterType="com.sxd.pojo.Role">
+        INSERT INTO role(name, description, status, created_at, updated_at)
+        VALUES (#{name}, #{description}, #{status}, NOW(), NOW())
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    
+    <!-- 更新角色 -->
+    <update id="updateRole" parameterType="com.sxd.pojo.Role">
+        UPDATE role
+        SET name = #{name},
+            description = #{description},
+            status = #{status},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 删除角色 -->
+    <delete id="deleteRoleById" parameterType="int">
+        DELETE FROM role WHERE id = #{id}
+    </delete>
+    
+    <!-- 根据用户ID查询角色 -->
+    <select id="queryRoleByUserId" parameterType="int" resultType="com.sxd.pojo.Role">
+        SELECT r.id, r.name, r.description, r.status, r.created_at AS createdAt, r.updated_at AS updatedAt
+        FROM role r
+        JOIN user u ON r.id = u.role_id
+        WHERE u.id = #{userId}
+    </select>
+    
+    <!-- 查询角色拥有的权限列表 -->
+    <select id="queryRolesWithPermissions" resultMap="RoleWithPermissionsMap">
+        SELECT r.id as role_id, r.name as role_name, r.description as role_desc, 
+               r.status as role_status, r.created_at as role_created, r.updated_at as role_updated,
+               p.id as perm_id, p.name as perm_name, p.url as perm_url, p.description as perm_desc,
+               p.status as perm_status, p.created_at as perm_created
+        FROM role r
+        LEFT JOIN role_permission rp ON r.id = rp.role_id
+        LEFT JOIN permission p ON rp.permission_id = p.id
+        WHERE r.status = 1
+        ORDER BY r.id, p.id
+    </select>
+    
+    <!-- 角色-权限关联结果映射 -->
+    <resultMap id="RoleWithPermissionsMap" type="com.sxd.pojo.Role">
+        <id property="id" column="role_id"/>
+        <result property="name" column="role_name"/>
+        <result property="description" column="role_desc"/>
+        <result property="status" column="role_status"/>
+        <result property="createdAt" column="role_created"/>
+        <result property="updatedAt" column="role_updated"/>
+        <collection property="permissions" ofType="com.sxd.pojo.Permission">
+            <id property="id" column="perm_id"/>
+            <result property="name" column="perm_name"/>
+            <result property="url" column="perm_url"/>
+            <result property="description" column="perm_desc"/>
+            <result property="status" column="perm_status"/>
+            <result property="createdAt" column="perm_created"/>
+        </collection>
+    </resultMap>
+    
+    <!-- 为角色添加权限 -->
+    <insert id="insertRolePermission">
+        INSERT INTO role_permission(role_id, permission_id)
+        VALUES (#{roleId}, #{permissionId})
+    </insert>
+    
+    <!-- 删除角色的所有权限 -->
+    <delete id="deleteRolePermissions" parameterType="int">
+        DELETE FROM role_permission WHERE role_id = #{roleId}
+    </delete>
+</mapper>

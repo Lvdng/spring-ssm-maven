@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0// EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxd.mapper.ItemMapper">
+    <select id="queryAllItems" resultType="item">
+        select * from item
+    </select>
+    
+    <!-- 模糊查询商品 -->
+    <select id="queryItemsByKeyword" resultType="item">
+        select * from item
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (name like concat('%', #{keyword}, '%') 
+                     or detail like concat('%', #{keyword}, '%')
+                     or price like concat('%', #{keyword}, '%'))
+            </if>
+        </where>
+    </select>
+    
+    <!-- 模糊查询商品并分页 -->
+    <select id="queryItemsByKeywordWithPagination" resultType="item">
+        select * from item
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (name like concat('%', #{keyword}, '%') 
+                     or detail like concat('%', #{keyword}, '%')
+                     or price like concat('%', #{keyword}, '%'))
+            </if>
+        </where>
+    </select>
+    
+    <!-- 获取符合条件的商品总数 -->
+    <select id="queryItemsCountByKeyword" resultType="int">
+        select count(*) from item
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (name like concat('%', #{keyword}, '%') 
+                     or detail like concat('%', #{keyword}, '%')
+                     or price like concat('%', #{keyword}, '%'))
+            </if>
+        </where>
+    </select>
+
+<!--    // 根据id查询-->
+    <select id="queryItemById" resultType="item">
+        select * from item where id = #{id}
+    </select>
+<!--    // 保存商品-->
+    <insert id="insertItem" parameterType="item">
+        insert into item(name, price, detail) values (#{name}, #{price}, #{detail})
+    </insert>
+<!--    // 更新商品信息-->
+    <update id="updateItem" parameterType="item">
+        update item set name = #{name}, price = #{price}, detail = #{detail} where id = #{id}
+    </update>
+<!--    // 删除-->
+    <delete id="deleteItemById" parameterType="int">
+        delete from item where id = #{id}
+    </delete>
+</mapper>

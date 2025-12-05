@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0// EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxd.mapper.AdminIncomeMapper">
+    <!-- 插入管理员收入记录 -->
+    <insert id="insertAdminIncome" parameterType="adminIncome">
+        INSERT INTO admin_income (order_id, amount)
+        VALUES (#{orderId}, #{amount})
+    </insert>
+    
+    <!-- 查询所有管理员收入记录 -->
+    <select id="selectAllAdminIncomes" resultType="adminIncome">
+        SELECT * FROM admin_income ORDER BY created_at DESC
+    </select>
+    
+    <!-- 查询管理员总收入 -->
+    <select id="selectTotalAdminIncome" resultType="java.math.BigDecimal">
+        SELECT COALESCE(SUM(amount), 0) FROM admin_income
+    </select>
+    
+    <!-- 根据订单ID查询收入记录 -->
+    <select id="selectAdminIncomeByOrderId" parameterType="int" resultType="adminIncome">
+        SELECT * FROM admin_income WHERE order_id = #{orderId}
+    </select>
+</mapper>

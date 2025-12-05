@@ -1,0 +1,430 @@
+/* 全局重置和基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 10px;
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 容器样式 */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 标题样式 */
+h1, h3 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+h1:hover, h3:hover {
+    color: #3498db;
+}
+
+h1 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+/* 表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+table:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 表头样式 */
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    padding: 12px 15px;
+}
+
+th:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+    transition: all 0.6s ease;
+}
+
+th:hover:after {
+    left: 150%;
+}
+
+/* 表格单元格样式 */
+td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+/* 表格行样式 */
+tr {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.01);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    z-index: 1;
+}
+
+tr:nth-child(even) {
+    background-color: #f5f7fa;
+}
+
+/* 按钮基础样式 */
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 2px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 按钮闪光效果 */
+.btn:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+    transition: all 0.5s ease;
+}
+
+.btn:hover:before {
+    left: 100%;
+}
+
+/* 按钮类型样式 */
+.btn-primary {
+    color: white;
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-default {
+    color: #333;
+    background-color: #ffffff;
+    border-color: #ddd;
+}
+
+.btn-default:hover {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-default:active {
+    transform: translateY(0);
+}
+
+.btn-danger {
+    color: white;
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+}
+
+/* 按钮尺寸 */
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+}
+
+/* 表单样式 */
+form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    transition: transform 0.2s ease;
+}
+
+.form-group:hover {
+    transform: translateY(-1px);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #2c3e50;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.form-group:hover label {
+    color: #3498db;
+}
+
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.form-group input[type="text"]:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group input[type="hidden"] {
+    display: none;
+}
+
+/* 表单按钮组 */
+.form-actions {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.form-actions .btn {
+    margin: 0 10px;
+    min-width: 80px;
+}
+
+/* 特殊行样式 */
+.add-item-row {
+    background-color: #f9f9f9 !important;
+    transition: background-color 0.3s ease;
+}
+
+.add-item-row:hover {
+    background-color: #f2f2f2 !important;
+}
+
+.no-data {
+    text-align: center;
+    padding: 30px;
+    color: #7f8c8d;
+    font-style: italic;
+    transition: color 0.3s ease;
+}
+
+.no-data:hover {
+    color: #555;
+}
+
+/* 响应式设计 - 平板 (768px - 1023px) */
+@media (max-width: 1023px) {
+    .container {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 1.6rem;
+        margin-bottom: 15px;
+    }
+    
+    h3 {
+        font-size: 1.3rem;
+    }
+    
+    th, td {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .btn {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+    
+    .form-group input[type="text"] {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+    
+    .form-actions .btn {
+        margin: 0 5px;
+        min-width: 70px;
+    }
+}
+
+/* 响应式设计 - 手机 (小于768px) */
+@media (max-width: 767px) {
+    body {
+        padding: 5px;
+    }
+    
+    .container {
+        padding: 10px;
+        border-radius: 6px;
+    }
+    
+    h1 {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+    
+    h3 {
+        font-size: 1.2rem;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        margin: 15px 0;
+    }
+    
+    th, td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    
+    /* 在移动设备上禁用行缩放效果 */
+    tr:hover {
+        transform: none;
+    }
+    
+    /* 移动设备上的按钮样式 - 垂直排列 */
+    .btn {
+        padding: 6px 10px;
+        font-size: 11px;
+        margin: 1px 0;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .btn-sm {
+        width: 100%;
+    }
+    
+    .add-item-row td {
+        padding: 15px 10px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-group input[type="text"] {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    
+    .form-actions {
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+    
+    .form-actions .btn {
+        margin: 5px 0;
+        width: 100%;
+    }
+}
+
+/* 极小屏幕优化 */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.2rem;
+    }
+    
+    h3 {
+        font-size: 1.1rem;
+    }
+    
+    th, td {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+    
+    .container {
+        padding: 8px;
+    }
+}

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0// EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxd.mapper.OrderMapper">
+    <!-- 插入订单 -->
+    <insert id="insertOrder" parameterType="order" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `order` (user_id, item_id, quantity, total_price, status)
+        VALUES (#{userId}, #{itemId}, #{quantity}, #{totalPrice}, #{status})
+    </insert>
+    
+    <!-- 根据用户ID查询订单列表 -->
+    <select id="selectOrdersByUserId" parameterType="int" resultType="order">
+        SELECT o.*, i.name as itemName
+        FROM `order` o
+        LEFT JOIN `item` i ON o.item_id = i.id
+        WHERE o.user_id = #{userId}
+        ORDER BY o.created_at DESC
+    </select>
+    
+    <!-- 查询所有订单 -->
+    <select id="selectAllOrders" resultType="order">
+        SELECT o.*, u.username, i.name as itemName
+        FROM `order` o
+        LEFT JOIN `user` u ON o.user_id = u.id
+        LEFT JOIN `item` i ON o.item_id = i.id
+        ORDER BY o.created_at DESC
+    </select>
+    
+    <!-- 根据ID查询订单 -->
+    <select id="selectOrderById" parameterType="int" resultType="order">
+        SELECT * FROM `order` WHERE id = #{id}
+    </select>
+    
+    <!-- 获取用户购买商品的统计数据 -->
+    <select id="selectOrderStatistics" resultType="map">
+        SELECT 
+            u.username AS username,
+            u.nickname AS nickname,
+            COUNT(o.id) AS orderCount,
+            SUM(o.quantity) AS totalQuantity,
+            SUM(o.total_price) AS totalAmount
+        FROM `order` o
+        JOIN `user` u ON o.user_id = u.id
+        GROUP BY o.user_id
+        ORDER BY totalAmount DESC
+    </select>
+    
+    <!-- 带筛选、分页和排序的订单查询 -->
+    <select id="selectOrdersWithFilter" parameterType="map" resultType="order">
+        SELECT o.*, u.username, i.name as itemName
+        FROM `order` o
+        LEFT JOIN `user` u ON o.user_id = u.id
+        LEFT JOIN `item` i ON o.item_id = i.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (u.username LIKE CONCAT('%', #{keyword}, '%')
+                    OR i.name LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy} ${orderDir}
+        </if>
+        <if test="orderBy == null or orderBy == ''">
+            ORDER BY o.created_at DESC
+        </if>
+        <if test="size != null">
+            LIMIT #{start}, #{size}
+        </if>
+    </select>
+    
+    <!-- 获取带筛选条件的订单总数 -->
+    <select id="selectOrdersCountWithFilter" parameterType="string" resultType="int">
+        SELECT COUNT(*) 
+        FROM `order` o
+        LEFT JOIN `user` u ON o.user_id = u.id
+        LEFT JOIN `item` i ON o.item_id = i.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (u.username LIKE CONCAT('%', #{keyword}, '%')
+                    OR i.name LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+    </select>
+    
+    <!-- 查找重复的订单组（相同用户相同商品） -->
+    <select id="findDuplicateOrders" resultType="map">
+        SELECT 
+            user_id AS userId,
+            item_id AS itemId,
+            COUNT(*) AS count
+        FROM `order`
+        GROUP BY user_id, item_id
+        HAVING COUNT(*) > 1
+    </select>
+    
+    <!-- 根据用户ID和商品ID查询订单列表 -->
+    <select id="selectOrdersByUserIdAndItemId" parameterType="map" resultType="order">
+        SELECT * FROM `order` 
+        WHERE user_id = #{userId} AND item_id = #{itemId}
+        ORDER BY created_at ASC
+    </select>
+    
+    <!-- 更新订单信息 -->
+    <update id="updateOrder" parameterType="order">
+        UPDATE `order` 
+        SET quantity = #{quantity}, 
+            total_price = #{totalPrice}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 批量删除订单 -->
+    <delete id="deleteOrdersByIds" parameterType="list">
+        DELETE FROM `order` 
+        WHERE id IN 
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

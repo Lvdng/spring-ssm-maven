@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sxd.mapper.UserMapper">
+    <!-- 根据用户名查询用户 -->
+    <select id="queryUserByUsername" parameterType="String" resultType="com.sxd.pojo.User">
+        SELECT
+            id,
+            username,
+            password,
+            nickname,
+            email,
+            phone,
+            created_at AS createdAt,
+            updated_at AS updatedAt,
+            status,
+            role_id AS roleId,
+            balance
+        FROM `user`
+        WHERE username = #{username}
+    </select>
+    
+    <!-- 根据邮箱查询用户 -->
+    <select id="queryUserByEmail" parameterType="String" resultType="com.sxd.pojo.User">
+        SELECT
+            id,
+            username,
+            password,
+            nickname,
+            email,
+            phone,
+            created_at AS createdAt,
+            updated_at AS updatedAt,
+            status,
+            role_id AS roleId,
+            balance
+        FROM `user`
+        WHERE email = #{email}
+    </select>
+    
+    <!-- 根据手机号查询用户 -->
+    <select id="queryUserByPhone" parameterType="String" resultType="com.sxd.pojo.User">
+        SELECT
+            id,
+            username,
+            password,
+            nickname,
+            email,
+            phone,
+            created_at AS createdAt,
+            updated_at AS updatedAt,
+            status,
+            role_id AS roleId,
+            balance
+        FROM `user`
+        WHERE phone = #{phone}
+    </select>
+    
+    <!-- 根据id查询用户 -->
+    <select id="queryUserById" parameterType="int" resultType="com.sxd.pojo.User">
+        SELECT
+            id,
+            username,
+            password,
+            nickname,
+            email,
+            phone,
+            created_at AS createdAt,
+            updated_at AS updatedAt,
+            status,
+            role_id AS roleId,
+            balance
+        FROM `user`
+        WHERE id = #{id}
+    </select>
+    
+    <!-- 更新用户角色 -->
+    <update id="updateUserRole">
+        UPDATE `user` SET role_id = #{roleId} WHERE id = #{userId}
+    </update>
+    
+    <!-- 查询所有用户 -->
+    <select id="queryAllUsers" resultType="com.sxd.pojo.User">
+        SELECT
+            id,
+            username,
+            password,
+            nickname,
+            email,
+            phone,
+            created_at AS createdAt,
+            updated_at AS updatedAt,
+            status,
+            role_id AS roleId,
+            balance
+        FROM `user` ORDER BY id
+    </select>
+    
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="com.sxd.pojo.User">
+        INSERT INTO `user`(
+            username,
+            password,
+            nickname,
+            email,
+            phone,
+            created_at,
+            updated_at,
+            status,
+            balance
+        ) VALUES (
+            #{username},
+            #{password},
+            #{nickname},
+            #{email},
+            #{phone},
+            NOW(),
+            NOW(),
+            #{status},
+            0.00
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    
+    <!-- 更新用户信息 -->
+    <update id="updateUser" parameterType="com.sxd.pojo.User">
+        UPDATE `user`
+        SET
+            password = #{password},
+            nickname = #{nickname},
+            email = #{email},
+            phone = #{phone},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 更新用户状态 -->
+    <update id="updateUserStatus">
+        UPDATE `user`
+        SET status = #{arg1},
+            updated_at = NOW()
+        WHERE id = #{arg0}
+    </update>
+    
+    <!-- 根据角色ID查询用户列表 -->
+    <select id="queryUsersByRoleId" parameterType="int" resultType="com.sxd.pojo.User">
+        SELECT
+            id,
+            username,
+            password,
+            nickname,
+            email,
+            phone,
+            role_id AS roleId,
+            created_at AS createdAt,
+            updated_at AS updatedAt,
+            status,
+            balance
+        FROM `user`
+        WHERE role_id = #{roleId}
+        ORDER BY id
+    </select>
+    
+    <!-- 更新用户余额 -->
+    <update id="updateUserBalance">
+        UPDATE `user`
+        SET balance = #{balance},
+            updated_at = NOW()
+        WHERE id = #{userId}
+    </update>
+</mapper>
