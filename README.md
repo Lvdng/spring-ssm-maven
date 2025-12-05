@@ -10,7 +10,7 @@
 - **数据库**: MySQL 9.0
 - **前端技术**: JSP + Bootstrap 3 + jQuery
 - **构建工具**: Maven 3
-- **开发工具**: IntelliJ IDEA / Eclipse
+- **开发工具**: IntelliJ IDEA 
 
 ## 项目结构
 
@@ -92,7 +92,7 @@ spring-ssm-maven/
 - JDK 11+
 - MySQL 9.0+
 - Maven 3.6+
-- Tomcat 7+
+- Tomcat 9
 
 ### 2. 数据库配置
 
